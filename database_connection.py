@@ -1,41 +1,54 @@
 from multiprocessing import connection
 from typing import Any
-import mysql.connector as mysqlConnector
+import mysql.connector as mysql_connector
 
-def printAndRasie(_exception):
-    print(_exception);
+
+def print_and_raise(_exception):
+    print(_exception)
     raise _exception
-    
-def initConnection():
+
+
+def init_connection():
     global connection
-    connection = mysqlConnector.connect(host="localhost",user="root",password="beetablet123$$",database="inventory_management")
+    connection = mysql_connector.connect(host="localhost", user="root", password="beetablet123$$",
+                                         database="inventory_management")
     if connection.is_connected():
         print("Connection Successful with the database")
         # setup cursor
-        setupCursor()
+        setup_cursor()
     else:
         print("Conncetion failed to be initiated")
-        
-def setupCursor():
+
+
+def setup_cursor():
     global cursor
-    cursor = getConnection().cursor()
-    
+    cursor = get_connection().cursor()
+
+
 # Gettors
 
-def getConnection():
+def get_connection():
     if connection is None:
-        printAndRasie("Connection is not initiated.")
+        print_and_raise("Connection is not initiated.")
     return connection;
 
-def getCursor():
+
+def get_cursor():
     if cursor is None:
-        printAndRasie("Cursor is null, connection was not Executed Successfullt")
+        print_and_raise("Cursor is null, connection was not Executed Successfullt")
     return cursor
 
-def executeQuery(query: str, params:Any):
-    getCursor().execute(query,params)
-    getConnection().commit()
-    
-def fetchQuery(query: str):
-    getCursor().execute(query)
-    return getCursor().fetchall()
+
+def execute_query(query: str, params: Any):
+    get_cursor().execute(query, params)
+    get_connection().commit()
+
+
+def fetch_query(query: str):
+    get_cursor().execute(query)
+    return get_cursor().fetchall()
+
+
+def fetch_query_with_param(query: str, param: Any):
+    get_cursor().execute(query, param)
+    return get_cursor().fetchall()

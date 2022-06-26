@@ -2,26 +2,41 @@ import random
 import string
 from string import Template
 
-from database_connection import executeQuery, fetchQuery, getCursor
+from database_connection import execute_query, fetch_query, get_cursor
 
-tableName = "list_table"
+table_name = "list_table"
 
-def getList(listId:str) -> list:
-    query = Template("SELECT * FROM list_table WHERE list_id = '$listId';").substitute(listId=listId)
-    return fetchQuery(query)
 
-def createList(_list: list, _list_value_type:list) -> str:
-    listId = generateId()
-    templateQuery = Template("INSERT INTO $tableName (list_id, item_index, value, value_type) VALUES( %s, %s, %s, %s)")
+def get_list(list_id: str) -> list:
+    query = Template("SELECT * FROM list_table WHERE list_id = '$list_id';").substitute(list_id=list_id)
+    result = fetch_query(query)
+    _list = []
+    _list_types = []
+    for i in range(0, len(result)):
+        _list.append(result[i][2])
+        _list_types.append(result[i][3])
+    # print(_list)
+    # print(_list_types)
+    return [_list, _list_types]
+
+
+def create_list(_list: list, _list_value_type: list) -> str:
+    list_id = generate_id()
+    template_query = Template(
+        "INSERT INTO $table_name (list_id, item_index, value, value_type) VALUES( %s, %s, %s, %s)")
     for i in range(0, len(_list)):
-        query = (templateQuery.substitute(
-            tableName=tableName, 
-            )
+        query = (template_query.substitute(
+            table_name=table_name,
         )
-        executeQuery(query,(listId,i,_list[i],_list_value_type[i]))
-    return listId # list id
+        )
+        execute_query(query, (list_id, i, _list[i], _list_value_type[i]))
+    return list_id  # list id
 
 
-def generateId(size=6, chars=string.ascii_uppercase + string.digits) -> str: 
+def generate_id(size=6, chars=string.ascii_uppercase + string.digits) -> str:
     return ''.join(random.choice(chars) for _ in range(size))
 
+
+def delete_list(list_id: str):
+    query = Template("DELETE FROM $table_name where list_id = %s").substitute(table_name=table_name)
+    execute_query(query, [list_id])
