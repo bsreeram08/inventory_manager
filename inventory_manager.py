@@ -36,7 +36,7 @@ def create_entry(table_id: str):
     list_values = []
     print("Inserting into table_name".replace("table_name", table_name))
     for i in range(0, len(column_names)):
-        value = input("Enter the column VALUE type : ".replace("VALUE", str(column_names[i])))
+        value = input("Enter data for VALUE : ".replace("VALUE", str(column_names[i])))
         list_values.append(value)
     list_id = create_list(list_values, column_types)
     insert_query = Template("INSERT INTO $table_name (table_id,list_id) VALUES(%s,%s)").substitute(

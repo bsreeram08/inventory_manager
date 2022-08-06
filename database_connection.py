@@ -17,7 +17,7 @@ def init_connection():
         # setup cursor
         setup_cursor()
     else:
-        print("Conncetion failed to be initiated")
+        print("Connection failed to be initiated")
 
 
 def setup_cursor():
@@ -30,12 +30,12 @@ def setup_cursor():
 def get_connection():
     if connection is None:
         print_and_raise("Connection is not initiated.")
-    return connection;
+    return connection
 
 
 def get_cursor():
     if cursor is None:
-        print_and_raise("Cursor is null, connection was not Executed Successfullt")
+        print_and_raise("Cursor is null, connection was not Executed Successfully")
     return cursor
 
 

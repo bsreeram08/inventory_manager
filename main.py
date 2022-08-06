@@ -1,10 +1,12 @@
 from database_connection import init_connection
-from inventory_manager import create_entry, get_table_entries, delete_entry
-from list_manager import create_list, get_list
+from inventory_manager import create_entry, delete_entry
+from metadata_manager import create_table, get_all_tables, get_table_with_values, delete_table
 
-# initiate the database connection
-from metadata_manager import create_table, get_all_tables, get_table, get_table_with_values, delete_table
-
+print(""" 
+╦┌┐┌┬  ┬┌─┐┌┐┌┬┐┌─┐┬─┐┬ ┬  ╔╦╗┌─┐┌┐┌┌─┐┌─┐┌─┐┌┬┐┌─┐┌┐┌┬┐  ╔═╗┬ ┬┌─┐┌┬┐┌─┐┌┬┐
+║│││└┐┌┘├┤ ││││ │ │├┬┘└┬┘  ║║║├─┤│││├─┤│ ┬├┤ │││├┤ ││││   ╚═╗└┬┘└─┐ │ ├┤ │││
+╩┘└┘ └┘ └─┘┘└┘┴ └─┘┴└─ ┴   ╩ ╩┴ ┴┘└┘┴ ┴└─┘└─┘┴ ┴└─┘┘└┘┴   ╚═╝ ┴ └─┘ ┴ └─┘┴ ┴
+""")
 
 def bootstrap():
     print("Inventory Manager.")
@@ -20,7 +22,7 @@ def bootstrap():
 
     option = int(input("Enter your option : "))
     if option == 7:
-        print("Bye Bye")
+        print("THANK YOU!")
         return
     match_option(option)
     bootstrap()
@@ -48,5 +50,6 @@ def match_option(option: int):
 
 
 # CODE STARTS HERE
+# initiate the database connection
 init_connection()
 bootstrap()
