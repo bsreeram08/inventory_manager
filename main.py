@@ -33,7 +33,7 @@ def bootstrap():
     print("8) Stop")
 
     option = int(input("Enter your option : "))
-    if option == 7:
+    if option == 8:
         print("THANK YOU!")
         return
     match_option(option)
@@ -67,5 +67,5 @@ def match_option(option: int):
 
 # CODE STARTS HERE
 # initiate the database connection
-# init_connection()
+init_connection()
 bootstrap()

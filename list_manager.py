@@ -43,15 +43,23 @@ def delete_list(list_id: str):
     execute_query(query, [list_id])
 
 
-def search_list(list_id:str, search_term:str):
-    template_query = Template("SELECT * FROM $table_name WHERE list_id = '$list_id' AND $table_name MATCH '$search_term';")
-    query = template_query.substitute(table_name=table_name, list_id = list_id, search_term=search_term)
-    result = fetch_query(query)
+def search_list(list_id, search_term: str):
+    result = []
+    for i in range(0,len(list_id)):
+        template_query = Template("SELECT * FROM $table_name WHERE list_id = '$list_id';")
+        query = template_query.substitute(table_name=table_name, list_id=list_id[i][0])
+        _res = fetch_query(query)
+        for j in range(0,len(_res)):
+            if search_term in _res[j][2]:
+                result.append(_res)
+                break
     _list = []
-    _list_types = []
     for i in range(0, len(result)):
-        _list.append(result[i][2])
-        _list_types.append(result[i][3])
-    # print(_list)
-    # print(_list_types)
-    return [_list, _list_types]
+        res = []
+        for j in range(0,len(result[i])):
+            res.append(result[i][j][2])
+        _list.append(res)
+
+    print(_list)
+
+    return [_list]

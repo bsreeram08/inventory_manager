@@ -1,4 +1,3 @@
-
 from string import Template
 
 from database_connection import execute_query, fetch_query_with_param, print_and_raise
@@ -78,8 +77,9 @@ def delete_inventory(table_id: str):
         delete_list(list_ids[i][0])
     execute_query(query, [table_id])
 
-def search_inventory(table_id:str, term:str):
-    get_list_id = Template("SELECT list_id from $table_name where table_id = %s;").substitute(
+
+def search_inventory(table_id: str, term: str):
+    get_list_ids = Template("SELECT list_id from $table_name where table_id = %s;").substitute(
         table_name=parent_table_name)
-    list_id = fetch_query_with_param(get_list_id, [table_id])[0]
-    return search_list(list_id,term)
+    list_ids = fetch_query_with_param(get_list_ids, [table_id])
+    return search_list(list_ids, term)
