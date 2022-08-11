@@ -9,15 +9,13 @@ print("""
 """)
 
 def bootstrap():
-    print("Inventory Manager.")
-
-    print("Options Available")
-    print("1) List All Tables")
-    print("2) List values of Table")
-    print("3) Add Value to Table")
-    print("4) Create Table")
-    print("5) Delete Table")
-    print("6) Delete Value in Table")
+    print("OPTIONS AVAILABLE")
+    print("1) To List All Tables")
+    print("2) To List the values of Table")
+    print("3) To Add Value to a Table")
+    print("4) To Create a Table")
+    print("5) To Delete a Table")
+    print("6) Delete Value in a Table")
     print("7) Stop")
 
     option = int(input("Enter your option : "))
