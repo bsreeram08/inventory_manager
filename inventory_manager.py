@@ -1,7 +1,8 @@
+
 from string import Template
 
 from database_connection import execute_query, fetch_query_with_param, print_and_raise
-from list_manager import create_list, get_list, delete_list
+from list_manager import create_list, get_list, delete_list, search_list
 
 parent_table_name = "inventory_table"
 metadata_table_name = "metadata_table"
@@ -76,3 +77,9 @@ def delete_inventory(table_id: str):
     for i in range(0, len(list_ids)):
         delete_list(list_ids[i][0])
     execute_query(query, [table_id])
+
+def search_inventory(table_id:str, term:str):
+    get_list_id = Template("SELECT list_id from $table_name where table_id = %s;").substitute(
+        table_name=parent_table_name)
+    list_id = fetch_query_with_param(get_list_id, [table_id])[0]
+    return search_list(list_id,term)

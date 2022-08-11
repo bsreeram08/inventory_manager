@@ -1,4 +1,5 @@
 import random
+from re import template
 import string
 from string import Template
 
@@ -40,3 +41,17 @@ def generate_id(size=6, chars=string.ascii_uppercase + string.digits) -> str:
 def delete_list(list_id: str):
     query = Template("DELETE FROM $table_name where list_id = %s").substitute(table_name=table_name)
     execute_query(query, [list_id])
+
+
+def search_list(list_id:str, search_term:str):
+    template_query = Template("SELECT * FROM $table_name WHERE list_id = '$list_id' AND $table_name MATCH '$search_term';")
+    query = template_query.substitute(table_name=table_name, list_id = list_id, search_term=search_term)
+    result = fetch_query(query)
+    _list = []
+    _list_types = []
+    for i in range(0, len(result)):
+        _list.append(result[i][2])
+        _list_types.append(result[i][3])
+    # print(_list)
+    # print(_list_types)
+    return [_list, _list_types]
