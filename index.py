@@ -1,20 +1,21 @@
-
+import csv
+from hashlib import new
 import random
 import string
 from string import Template
 from multiprocessing import connection
 from typing import Any
 import mysql.connector as mysql_connector
-from cryptography.fernet import Fernet
+# from cryptography.fernet import Fernet
 from tabulate import tabulate
 
 parent_table_name = "inventory_table"
 metadata_table_name = "metadata_table"
 table_name = "list_table"
-key = b'rPuxmfV-imRkOA7sXAcCFWCLzl1NCKwifrTpH6KA3X4='
-fernet = Fernet(key)
-encryptedUsername = b'gAAAAABi9SVug0gzYaps5x4vKcWXzL5T3dHTYKB4fGhB4QAwx4XpovbplHnpmRDhK3VbD9C6OZKjTx-UdRXislq-wqLnUYu42Q=='
-encryptedPassword = b'gAAAAABi9SVuBRXULUyblDkTUIn3kUyxWqjkxtTcQ5eE2rN3hUEJFd4Ydbdi5Uwu3aKh1zMX_hYdaag1g8gPZPTn3zraNAGl9g=='
+# key = b'rPuxmfV-imRkOA7sXAcCFWCLzl1NCKwifrTpH6KA3X4='
+# fernet = Fernet(key)
+# encryptedUsername = b'gAAAAABi9SVug0gzYaps5x4vKcWXzL5T3dHTYKB4fGhB4QAwx4XpovbplHnpmRDhK3VbD9C6OZKjTx-UdRXislq-wqLnUYu42Q=='
+# encryptedPassword = b'gAAAAABi9SVuBRXULUyblDkTUIn3kUyxWqjkxtTcQ5eE2rN3hUEJFd4Ydbdi5Uwu3aKh1zMX_hYdaag1g8gPZPTn3zraNAGl9g=='
 value = "logged_out"
 parent_table_name_metadata = "metadata_table"
 parent_table_name_inventory = "inventory_table"
@@ -206,13 +207,40 @@ def search_list(list_id, search_term: str):
     return [_list]
 
 def login():
-    username = input('Enter your username : ')
-    password = input('Enter your password : ')
-    if(username == fernet.decrypt(encryptedUsername).decode() and password == fernet.decrypt(encryptedPassword).decode()):
-        return True
-    else:
-        print('Invalid Username or password.')
+    existing_user = input('Do you already have an account? [0-Yes] : ')
+    if existing_user == '0':
+        username = input('Enter your username : ')
+        password = input('Enter your password : ')
+        with open('accounts.csv',mode='r') as f:
+            accounts = csv.reader(f,delimiter=',')
+            for account in accounts:
+                print(account)
+                if account == [username,password]:
+                    print("User Logged in Successfully")
+                    return True
+        print("Incorrect Username or password.")
         return False
+    else:
+        new_username = input("Enter you new username:")
+        new_password = input("Enter you new password:")
+        with open('accounts.csv',mode='r') as f:
+            accounts = csv.reader(f,delimiter=',')
+            for account in accounts:
+                if account[0] == new_username:
+                    print("User Already Exists Please Login.")
+                    return login()
+            with open('accounts.csv',mode='a',newline='') as write:
+                writer=csv.writer(write,delimiter=',')
+                writer.writerow([new_username,new_password])
+                print('User Created successfully, please login')
+                return login()
+    return False;
+
+    # if(username == fernet.decrypt(encryptedUsername).decode() and password == fernet.decrypt(encryptedPassword).decode()):
+    #     return True
+    # else:
+    #     print('Invalid Username or password.')
+    #     return False
 
 
 def create_table() -> str:
